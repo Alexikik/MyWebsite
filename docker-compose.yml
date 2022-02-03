@@ -1,0 +1,39 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+version: '3.4'
+
+services:
+  blazorclientserverserver:
+    image: blazorclientserverserver
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+    ports:
+      - 4080:80
+      - 4443:443
+  blazorclientserverclient:
+    image: blazorclientserverclient
+    build:
+      context: .
+      dockerfile: Client/Dockerfile
+    ports:
+      - 5080:80
+      - 5443:443
+  db:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: Alexik1998@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: vb1891
+    ports:
+      - "5050:80"
